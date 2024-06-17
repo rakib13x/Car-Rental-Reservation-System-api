@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
+import { TUser } from '../interface/user.interface';
 
-const userSchema = new Schema(
+const userSchema = new Schema<TUser>(
   {
     name: {
       type: String,
@@ -15,7 +16,6 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
-      select: 0,
     },
     role: {
       type: String,
@@ -36,4 +36,4 @@ const userSchema = new Schema(
   },
 );
 
-export const User = model('User', userSchema);
+export const User = model<TUser>('User', userSchema);
