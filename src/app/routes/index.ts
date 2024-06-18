@@ -6,7 +6,7 @@ const router = Router();
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const moduleRoutes = [
   {
-    path: '/users',
+    path: '/auth/signup',
     route: UserRoutes,
   },
 ];
