@@ -19,20 +19,28 @@ const createCars = catchAsync(async (req, res) => {
   });
 });
 
-const getAllCars = catchAsync(async (req: Request, res: Response) => {
-  const result =
-    await SemesterRegistrationService.getAllSemesterRegistrationsFromDB(
-      req.query,
-    );
+const getAllCars = catchAsync(async (req, res) => {
+  const { name } = req.query;
+  const regex = name ? new RegExp(name as string, 'i') : undefined;
+  const cars = await CarServices.getAllCarsFromDb(regex);
+
+  if (cars.length === 0) {
+    sendResponse(res, {
+      statusCode: httpStatus.NOT_FOUND,
+      success: false,
+      message: 'All Cars is retrieved successfully !',
+      data: [],
+    });
+  }
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Semester Registration is retrieved successfully !',
-    meta: result.meta,
-    data: result.result,
+    message: 'All Cars is retrieved successfully !',
+    data: cars,
   });
 });
 export const CarControllers = {
   createCars,
+  getAllCars,
 };

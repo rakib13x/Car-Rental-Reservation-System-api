@@ -6,6 +6,19 @@ const createCarsIntoDB = async (car: TCar) => {
   return result;
 };
 
+const getAllCarsFromDb = async (regex?: RegExp) => {
+  try {
+    const result = regex
+      ? await carModel.find({ name: { $regex: regex } })
+      : await carModel.find();
+
+    return result;
+  } catch (error: any) {
+    throw new Error('Error fetching products: ' + error.message);
+  }
+};
+
 export const CarServices = {
   createCarsIntoDB,
+  getAllCarsFromDb,
 };
