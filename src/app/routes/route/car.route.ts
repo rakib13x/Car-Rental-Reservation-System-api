@@ -5,5 +5,6 @@ const router = express.Router();
 
 router.post('/', CarControllers.createCars);
 router.get('/', CarControllers.getAllCars);
+router.get('/:carId', CarControllers.getSingleCar);
 
 export const CarRoutes = router;

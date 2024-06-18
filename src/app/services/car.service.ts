@@ -18,7 +18,13 @@ const getAllCarsFromDb = async (regex?: RegExp) => {
   }
 };
 
+const getSingleCarFromDb = async (id: string) => {
+  const result = await carModel.findById(id);
+  return result;
+};
+
 export const CarServices = {
   createCarsIntoDB,
   getAllCarsFromDb,
+  getSingleCarFromDb,
 };
