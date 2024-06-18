@@ -1,16 +1,16 @@
 import { TCar } from '../interface/car.interface';
-import { carModel } from '../models/car.model';
+import { CarModel } from '../model/car.model';
 
 const createCarsIntoDB = async (car: TCar) => {
-  const result = await carModel.create(car);
+  const result = await CarModel.create(car);
   return result;
 };
 
 const getAllCarsFromDb = async (regex?: RegExp) => {
   try {
     const result = regex
-      ? await carModel.find({ name: { $regex: regex } })
-      : await carModel.find();
+      ? await CarModel.find({ name: { $regex: regex } })
+      : await CarModel.find();
 
     return result;
   } catch (error: any) {
@@ -19,7 +19,7 @@ const getAllCarsFromDb = async (regex?: RegExp) => {
 };
 
 const getSingleCarFromDb = async (id: string) => {
-  const result = await carModel.findById(id);
+  const result = await CarModel.findById(id);
   return result;
 };
 

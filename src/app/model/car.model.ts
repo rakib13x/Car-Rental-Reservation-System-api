@@ -1,4 +1,5 @@
-import { model, Schema } from 'mongoose';
+// In src/models/car.model.ts
+import { Schema, model } from 'mongoose';
 import { TCar } from '../interface/car.interface';
 
 const carSchema = new Schema<TCar>(
@@ -40,4 +41,4 @@ const carSchema = new Schema<TCar>(
   { timestamps: true },
 );
 
-export const carModel = model<TCar>('Car', carSchema);
+export const CarModel = model<TCar>('Car', carSchema);

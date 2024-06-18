@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { model, Schema } from 'mongoose';
 import { TUser } from '../interface/user.interface';
 
 const userSchema = new Schema<TUser>(
@@ -6,7 +6,6 @@ const userSchema = new Schema<TUser>(
     name: {
       type: String,
       required: true,
-      unique: true,
     },
     email: {
       type: String,
