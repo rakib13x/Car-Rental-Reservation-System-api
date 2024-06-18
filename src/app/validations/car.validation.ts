@@ -6,7 +6,7 @@ export const createCarValidationSchema = z.object({
   color: z.string().min(3, { message: 'Car color is required!' }),
   isElectric: z.boolean(),
   status: z.enum(['available', 'not available']).default('available'),
-  features: z.array(z.string()).optional(),
+  features: z.array(z.string()),
   pricePerHour: z.number({ message: 'price is required!' }),
   isDeleted: z.boolean().default(false),
 });
