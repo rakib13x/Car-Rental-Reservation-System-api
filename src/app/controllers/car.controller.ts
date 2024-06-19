@@ -6,7 +6,6 @@ import { createCarValidationSchema } from '../validations/car.validation';
 
 const createCars = catchAsync(async (req, res) => {
   const car = req.body;
-  console.log(car);
 
   const validateCarData = createCarValidationSchema.parse(car);
   const result = await CarServices.createCarsIntoDB(validateCarData);

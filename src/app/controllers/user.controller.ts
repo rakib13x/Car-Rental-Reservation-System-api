@@ -6,7 +6,6 @@ import { createUserValidationSchema } from '../validations/user.validation';
 
 const createUser = catchAsync(async (req, res) => {
   const user = req.body;
-  console.log(user);
 
   const validateUserData = createUserValidationSchema.parse(user);
   const result = await UserServices.createUserIntoDB(validateUserData);
