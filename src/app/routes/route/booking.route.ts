@@ -5,7 +5,7 @@ import auth from '../../middlewares/auth';
 
 const router = express.Router();
 
-router.post('/', bookingControllers.createBooking);
+router.post('/', auth(USER_ROLE.user), bookingControllers.createBooking);
 router.get(
   '/my-bookings',
   auth(USER_ROLE.user),

@@ -10,11 +10,15 @@ export const createBookingValidationSchema = z.object({
   startTime: z.string().regex(/^([01]\d|2[0-3]):?([0-5]\d)$/, {
     message: 'Invalid start time format! Must be in HH:mm format.',
   }),
-  endTime: z.string().regex(/^([01]\d|2[0-3]):?([0-5]\d)$/, {
-    message: 'Invalid end time format! Must be in HH:mm format.',
-  }),
+  endTime: z
+    .string()
+    .regex(/^([01]\d|2[0-3]):?([0-5]\d)$/, {
+      message: 'Invalid end time format! Must be in HH:mm format.',
+    })
+    .optional(),
   totalCost: z
     .number({ required_error: 'Total cost is required!' })
     .nonnegative({ message: 'Total cost must be a non-negative number!' })
-    .default(0),
+    .default(0)
+    .optional(),
 });

@@ -1,4 +1,5 @@
 import httpStatus from 'http-status';
+import mongoose from 'mongoose';
 import { CarServices } from '../services/car.service';
 import catchAsync from '../utils/catchAsync';
 import sendResponse from '../utils/sendResponse';
@@ -96,10 +97,34 @@ const deleteCar = catchAsync(async (req, res) => {
   });
 });
 
+const returnCar = catchAsync(async (req, res) => {
+  const { bookingId } = req.body;
+
+  // Validate bookingId
+  if (!bookingId || !mongoose.Types.ObjectId.isValid(bookingId)) {
+    return sendResponse(res, {
+      statusCode: httpStatus.BAD_REQUEST,
+      success: false,
+      message: 'Invalid Booking ID',
+      data: null,
+    });
+  }
+
+  const result = await CarServices.returnCarInDb(bookingId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Car returned successfully!',
+    data: result,
+  });
+});
+
 export const CarControllers = {
   createCars,
   getAllCars,
   getSingleCar,
   updateCar,
   deleteCar,
+  returnCar,
 };

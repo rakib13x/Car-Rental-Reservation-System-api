@@ -1,4 +1,5 @@
 import { TCar } from '../interface/car.interface';
+import { BookingModel } from '../model/booking.model';
 import { CarModel } from '../model/car.model';
 
 const createCarsIntoDB = async (car: TCar) => {
@@ -40,10 +41,42 @@ const deleteCarFromDb = async (id: string) => {
   return result;
 };
 
+const returnCarInDb = async (bookingId: string) => {
+  const booking = await BookingModel.findById(bookingId)
+    .populate('car')
+    .populate('user');
+
+  if (!booking) {
+    throw new Error('Booking not found');
+  }
+
+  const startTime = parseFloat(booking.startTime.replace(':', '.'));
+  const endTime = parseFloat(booking.endTime.replace(':', '.'));
+  const duration = endTime - startTime;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const totalCost = duration * (booking.car as any).pricePerHour;
+
+  await CarModel.findByIdAndUpdate(
+    booking.car._id,
+    { status: 'available' },
+    { new: true },
+  );
+
+  const updatedBooking = await BookingModel.findByIdAndUpdate(
+    bookingId,
+    { totalCost },
+    { new: true },
+  )
+    .populate('car')
+    .populate('user');
+
+  return updatedBooking;
+};
 export const CarServices = {
   createCarsIntoDB,
   getAllCarsFromDb,
   getSingleCarFromDb,
   updateCarInDb,
   deleteCarFromDb,
+  returnCarInDb,
 };
