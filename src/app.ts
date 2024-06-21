@@ -5,6 +5,7 @@
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { Application, Request, Response } from 'express';
+import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import notFound from './app/middlewares/middleware';
 import router from './app/routes';
 
@@ -23,6 +24,6 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello from server.');
 });
 
-//
+app.use(globalErrorHandler);
 app.use(notFound);
 export default app;
