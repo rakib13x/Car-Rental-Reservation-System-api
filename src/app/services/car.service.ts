@@ -1,3 +1,4 @@
+import AppError from '../errors/AppError';
 import { TCar } from '../interface/car.interface';
 import { BookingModel } from '../model/booking.model';
 import { CarModel } from '../model/car.model';
@@ -41,18 +42,27 @@ const deleteCarFromDb = async (id: string) => {
   return result;
 };
 
-const returnCarInDb = async (bookingId: string) => {
+const returnCarInDb = async (bookingId: string, endTime: string) => {
   const booking = await BookingModel.findById(bookingId)
     .populate('car')
     .populate('user');
 
   if (!booking) {
-    throw new Error('Booking not found');
+    throw new AppError(404, 'Booking not found');
+  }
+
+  if (!endTime) {
+    throw new AppError(400, 'End time is required to return the car');
   }
 
   const startTime = parseFloat(booking.startTime.replace(':', '.'));
-  const endTime = parseFloat(booking.endTime.replace(':', '.'));
-  const duration = endTime - startTime;
+  const endTimeFloat = parseFloat(endTime.replace(':', '.'));
+  const duration = endTimeFloat - startTime;
+
+  if (isNaN(duration) || duration < 0) {
+    throw new AppError(400, 'Invalid booking duration');
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const totalCost = duration * (booking.car as any).pricePerHour;
 
@@ -64,7 +74,7 @@ const returnCarInDb = async (bookingId: string) => {
 
   const updatedBooking = await BookingModel.findByIdAndUpdate(
     bookingId,
-    { totalCost },
+    { endTime, totalCost },
     { new: true },
   )
     .populate('car')

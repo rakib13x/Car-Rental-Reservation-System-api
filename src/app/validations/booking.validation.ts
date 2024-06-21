@@ -11,6 +11,11 @@ export const createBookingValidationSchema = z.object({
     startTime: z.string().regex(/^([01]\d|2[0-3]):?([0-5]\d)$/, {
       message: 'Invalid start time format! Must be in HH:mm format.',
     }),
+  }),
+});
+
+export const updateBookingValidationSchema = z.object({
+  body: z.object({
     endTime: z
       .string()
       .regex(/^([01]\d|2[0-3]):?([0-5]\d)$/, {

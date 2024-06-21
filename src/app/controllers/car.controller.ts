@@ -94,9 +94,8 @@ const deleteCar = catchAsync(async (req, res) => {
 });
 
 const returnCar = catchAsync(async (req, res) => {
-  const { bookingId } = req.body;
+  const { bookingId, endTime } = req.body;
 
-  // Validate bookingId
   if (!bookingId || !mongoose.Types.ObjectId.isValid(bookingId)) {
     return sendResponse(res, {
       statusCode: httpStatus.BAD_REQUEST,
@@ -106,14 +105,23 @@ const returnCar = catchAsync(async (req, res) => {
     });
   }
 
-  const result = await CarServices.returnCarInDb(bookingId);
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Car returned successfully!',
-    data: result,
-  });
+  try {
+    const result = await CarServices.returnCarInDb(bookingId, endTime);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Car returned successfully!',
+      data: result,
+    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    sendResponse(res, {
+      statusCode: httpStatus.INTERNAL_SERVER_ERROR,
+      success: false,
+      message: error.message,
+      data: null,
+    });
+  }
 });
 
 export const CarControllers = {
