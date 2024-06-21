@@ -9,5 +9,6 @@ router.post('/', CarControllers.createCars);
 router.get('/', CarControllers.getAllCars);
 router.get('/:carId', CarControllers.getSingleCar);
 router.put('/:carId', auth(USER_ROLE.admin), CarControllers.updateCar);
+router.delete('/:carId', auth(USER_ROLE.admin), CarControllers.deleteCar);
 
 export const CarRoutes = router;
