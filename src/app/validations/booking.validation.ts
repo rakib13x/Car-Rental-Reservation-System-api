@@ -2,9 +2,8 @@ import { z } from 'zod';
 
 export const createBookingValidationSchema = z.object({
   body: z.object({
-    date: z.date({
-      required_error: 'Booking date is required!',
-      invalid_type_error: 'Invalid date format!',
+    date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, {
+      message: 'Invalid date format! Must be in YYYY-MM-DD format.',
     }),
     user: z.string(),
     car: z.string(),

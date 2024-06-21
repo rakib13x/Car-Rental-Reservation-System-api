@@ -5,7 +5,7 @@ export interface TBooking {
   user: Types.ObjectId;
   car: Types.ObjectId;
   startTime: string;
-  endTime: string;
+  endTime: string | null;
   totalCost: number;
   isDeleted: boolean;
 }

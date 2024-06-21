@@ -3,7 +3,23 @@ import { TBooking } from '../interface/booking.interface';
 import { BookingModel } from '../model/booking.model';
 import { CarModel } from '../model/car.model';
 
-const createBookingIntoDB = async (bookingData: TBooking) => {
+const createBookingIntoDB = async (
+  bookingData: Partial<Omit<TBooking, 'endTime' | 'totalCost'>>,
+) => {
+  if (
+    !bookingData.date ||
+    !bookingData.user ||
+    !bookingData.car ||
+    !bookingData.startTime
+  ) {
+    throw new AppError(
+      400,
+      'All required fields (date, user, car, startTime) must be provided',
+    );
+  }
+
+  bookingData.date = new Date(bookingData.date);
+
   const existingBooking = await BookingModel.findOne({
     user: bookingData.user,
     endTime: null,
@@ -21,9 +37,14 @@ const createBookingIntoDB = async (bookingData: TBooking) => {
     throw new AppError(400, 'Car is not available for booking');
   }
 
-  bookingData.totalCost = 0;
+  const bookingToCreate: Partial<TBooking> = {
+    ...bookingData,
+    totalCost: 0,
+    endTime: null,
+    isDeleted: false,
+  };
 
-  const createdBooking = await BookingModel.create(bookingData);
+  const createdBooking = await BookingModel.create(bookingToCreate);
 
   const populatedBooking = await BookingModel.findById(createdBooking._id)
     .populate('user')
