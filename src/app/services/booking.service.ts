@@ -13,6 +13,14 @@ const createBookingIntoDB = async (bookingData: TBooking) => {
   return populatedBooking;
 };
 
+const getMyBookingsFromDb = async (userId: string) => {
+  const bookings = await BookingModel.find({ user: userId, isDeleted: false })
+    .populate('car')
+    .exec();
+  return bookings;
+};
+
 export const BookingServices = {
   createBookingIntoDB,
+  getMyBookingsFromDb,
 };
