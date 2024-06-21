@@ -1,11 +1,21 @@
+import bcrypt from 'bcrypt';
+import httpStatus from 'http-status';
+import AppError from '../errors/AppError';
 import { TLoginUser } from '../interface/auth.interface';
-import { UserModel } from '../model/user.model';
+import { User } from '../model/user.model';
 
 const loginUser = async (payload: TLoginUser) => {
   console.log(payload);
 
-  const isUserExists = await UserModel.findOne({ email: payload?.email });
-  console.log(isUserExists);
+  const isUserExists = await User.isUserExistsByEmail(payload?.email);
+  if (!isUserExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'This user does not exist!');
+  }
+  const isPasswordMatched = await bcrypt.compare(
+    payload?.password,
+    isUserExists?.password,
+  );
+  console.log(isPasswordMatched);
 
   return {};
 };
