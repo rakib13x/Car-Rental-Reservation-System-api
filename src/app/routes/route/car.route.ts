@@ -5,7 +5,7 @@ import auth from '../../middlewares/auth';
 
 const router = express.Router();
 
-router.post('/', CarControllers.createCars);
+router.post('/', auth(USER_ROLE.admin), CarControllers.createCars);
 router.get('/', CarControllers.getAllCars);
 router.put('/return', auth(USER_ROLE.admin), CarControllers.returnCar);
 router.get('/:carId', CarControllers.getSingleCar);

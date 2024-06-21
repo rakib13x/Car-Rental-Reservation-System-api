@@ -16,6 +16,15 @@ const createBooking = catchAsync(async (req, res) => {
 
 const getMyBookings = catchAsync(async (req, res) => {
   const userId = req.user._id;
+  if (!userId) {
+    return sendResponse(res, {
+      statusCode: httpStatus.BAD_REQUEST,
+      success: false,
+      message: 'User ID is missing from request.',
+      data: null,
+    });
+  }
+
   const bookings = await BookingServices.getMyBookingsFromDb(userId);
 
   sendResponse(res, {

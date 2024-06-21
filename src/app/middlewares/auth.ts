@@ -17,24 +17,28 @@ const auth = (...requiredRoles: TUserRole[]) => {
 
     const token = authHeader.split(' ')[1];
 
-    const decoded = jwt.verify(
-      token,
-      config.jwt_access_secret as string,
-    ) as JwtPayload;
+    try {
+      const decoded = jwt.verify(
+        token,
+        config.jwt_access_secret as string,
+      ) as JwtPayload;
+      const { _id, role, userEmail } = decoded;
 
-    const { role, userEmail } = decoded;
+      const user = await User.isUserExistsByEmail(userEmail);
 
-    const user = await User.isUserExistsByEmail(userEmail);
+      if (!user) {
+        throw new AppError(httpStatus.NOT_FOUND, 'This user is not found!');
+      }
 
-    if (!user) {
-      throw new AppError(httpStatus.NOT_FOUND, 'This user is not found!');
+      if (requiredRoles.length && !requiredRoles.includes(role)) {
+        throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
+      }
+
+      req.user = { _id };
+      next();
+    } catch (error) {
+      throw new AppError(httpStatus.UNAUTHORIZED, 'Invalid or expired token!');
     }
-
-    if (requiredRoles && !requiredRoles.includes(role)) {
-      throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
-    }
-    req.user = decoded as JwtPayload;
-    next();
   });
 };
 

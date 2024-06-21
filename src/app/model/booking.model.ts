@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { Schema, model } from 'mongoose';
 import { TBooking } from '../interface/booking.interface';
 
@@ -25,6 +23,7 @@ const bookingSchema = new Schema<TBooking>(
       validate: {
         validator: (value: string) =>
           /^([01]\d|2[0-3]):?([0-5]\d)$/.test(value),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         message: (props: any) =>
           `${props.value} is not a valid 24-hour time format!`,
       },
@@ -36,6 +35,10 @@ const bookingSchema = new Schema<TBooking>(
     totalCost: {
       type: Number,
       default: 0,
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true },

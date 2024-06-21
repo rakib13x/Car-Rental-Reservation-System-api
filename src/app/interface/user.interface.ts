@@ -3,6 +3,7 @@ import { Model } from 'mongoose';
 import { USER_ROLE } from '../constants/user.constant';
 
 export interface TUser {
+  _id: string;
   name: string;
   email: string;
   password: string;
