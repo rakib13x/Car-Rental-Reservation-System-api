@@ -12,7 +12,6 @@ export interface TUser {
 }
 
 export interface UserModel extends Model<TUser> {
-  // eslint-disable-next-line no-unused-vars
   isUserExistsByEmail(email: string): Promise<TUser>;
   isPasswordMatched(
     plainTextPassword: string,
