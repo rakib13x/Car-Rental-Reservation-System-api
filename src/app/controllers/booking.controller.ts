@@ -2,6 +2,8 @@
 import httpStatus from 'http-status';
 import { BookingServices } from '../services/booking.service';
 import catchAsync from '../utils/catchAsync';
+import { isValidDate } from '../utils/isValidDate';
+import { isValidObjectId } from '../utils/isValidObjectId';
 import sendResponse from '../utils/sendResponse';
 
 const createBooking = catchAsync(async (req, res) => {
@@ -40,15 +42,13 @@ const getAllBookings = catchAsync(async (req, res) => {
   const { carId, date } = req.query;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let filter: any = {
-    isDeleted: false,
-  };
+  let filter: any = {};
 
-  if (carId) {
+  if (carId && isValidObjectId(carId as string)) {
     filter.car = carId as string;
   }
 
-  if (date) {
+  if (date && isValidDate(date as string)) {
     filter.date = new Date(date as string);
   }
 
