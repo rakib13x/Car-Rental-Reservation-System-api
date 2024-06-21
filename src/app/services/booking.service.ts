@@ -18,8 +18,10 @@ const createBookingIntoDB = async (bookingData: TBooking) => {
 
   const car = await CarModel.findById(bookingData.car);
   if (!car || car.status !== 'available') {
-    throw new AppError(400, 'Selected car is not available for booking');
+    throw new AppError(400, 'Car is not available for booking');
   }
+
+  bookingData.totalCost = 0;
 
   const createdBooking = await BookingModel.create(bookingData);
 

@@ -7,7 +7,18 @@ import { isValidObjectId } from '../utils/isValidObjectId';
 import sendResponse from '../utils/sendResponse';
 
 const createBooking = catchAsync(async (req, res) => {
-  const result = await BookingServices.createBookingIntoDB(req.body);
+  const { endTime, totalCost, ...bookingData } = req.body;
+
+  if (endTime || totalCost) {
+    return sendResponse(res, {
+      statusCode: httpStatus.BAD_REQUEST,
+      success: false,
+      message: 'You cannot set endTime or totalCost when creating a booking.',
+      data: null,
+    });
+  }
+
+  const result = await BookingServices.createBookingIntoDB(bookingData);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
