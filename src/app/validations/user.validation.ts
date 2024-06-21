@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const createUserValidationSchema = z.object({
+  _id: z.string(),
   name: z.string().min(5, { message: 'Name is Required!' }),
   email: z.string().min(8, { message: 'email is required!' }),
   password: z

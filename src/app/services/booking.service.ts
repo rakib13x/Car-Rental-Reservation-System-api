@@ -36,7 +36,21 @@ const getMyBookingsFromDb = async (userId: string) => {
   return bookings;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getAllBookings = async (filter: any) => {
+  console.log('Fetching bookings with filter:', filter);
+
+  const bookings = await BookingModel.find(filter)
+    .populate('user')
+    .populate('car')
+    .exec();
+
+  console.log('Bookings fetched:', bookings);
+  return bookings;
+};
+
 export const BookingServices = {
   createBookingIntoDB,
   getMyBookingsFromDb,
+  getAllBookings,
 };
