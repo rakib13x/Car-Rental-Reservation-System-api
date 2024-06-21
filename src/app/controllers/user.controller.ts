@@ -4,6 +4,7 @@ import catchAsync from '../utils/catchAsync';
 import sendResponse from '../utils/sendResponse';
 
 const createUser = catchAsync(async (req, res) => {
+  req.body.role = 'user';
   const result = await UserServices.createUserIntoDB(req.body);
 
   sendResponse(res, {
@@ -14,18 +15,6 @@ const createUser = catchAsync(async (req, res) => {
   });
 });
 
-const getAllUsers = catchAsync(async (req, res) => {
-  const result = await UserServices.getAllUserFromDb();
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Users retrieved successfully!',
-    data: result,
-  });
-});
-
 export const UserControllers = {
   createUser,
-  getAllUsers,
 };

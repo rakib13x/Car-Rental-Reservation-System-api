@@ -34,10 +34,15 @@ const auth = (...requiredRoles: TUserRole[]) => {
         throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
       }
 
-      req.user = { _id };
+      req.user = { _id, role, userEmail };
       next();
     } catch (error) {
-      throw new AppError(httpStatus.UNAUTHORIZED, 'Invalid or expired token!');
+      if (error instanceof jwt.TokenExpiredError) {
+        throw new AppError(httpStatus.UNAUTHORIZED, 'Token expired!');
+      } else if (error instanceof jwt.JsonWebTokenError) {
+        throw new AppError(httpStatus.UNAUTHORIZED, 'Invalid token!');
+      }
+      throw new AppError(httpStatus.UNAUTHORIZED, 'You are Unauthorized');
     }
   });
 };
