@@ -3,13 +3,9 @@ import mongoose from 'mongoose';
 import { CarServices } from '../services/car.service';
 import catchAsync from '../utils/catchAsync';
 import sendResponse from '../utils/sendResponse';
-import { createCarValidationSchema } from '../validations/car.validation';
 
 const createCars = catchAsync(async (req, res) => {
-  const car = req.body;
-
-  const validateCarData = createCarValidationSchema.parse(car);
-  const result = await CarServices.createCarsIntoDB(validateCarData);
+  const result = await CarServices.createCarsIntoDB(req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

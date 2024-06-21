@@ -2,10 +2,17 @@ import express from 'express';
 import { USER_ROLE } from '../../constants/user.constant';
 import { CarControllers } from '../../controllers/car.controller';
 import auth from '../../middlewares/auth';
+import validateRequest from '../../middlewares/validateRequest';
+import { createCarValidationSchema } from '../../validations/car.validation';
 
 const router = express.Router();
 
-router.post('/', auth(USER_ROLE.admin), CarControllers.createCars);
+router.post(
+  '/',
+  auth(USER_ROLE.admin),
+  validateRequest(createCarValidationSchema),
+  CarControllers.createCars,
+);
 router.get('/', CarControllers.getAllCars);
 router.put('/return', auth(USER_ROLE.admin), CarControllers.returnCar);
 router.get('/:carId', CarControllers.getSingleCar);
