@@ -1,4 +1,6 @@
 import httpStatus from 'http-status';
+import jwt from 'jsonwebtoken';
+import config from '../config';
 import AppError from '../errors/AppError';
 import { TLoginUser } from '../interface/auth.interface';
 import { User } from '../model/user.model';
@@ -15,7 +17,18 @@ const loginUser = async (payload: TLoginUser) => {
     throw new AppError(httpStatus.FORBIDDEN, 'Password do not matched.');
   }
 
-  return {};
+  const jwtPayload = {
+    userEmail: user.email,
+    role: user.role,
+  };
+
+  const accessToken = jwt.sign(jwtPayload, config.jwt_access_secret as string, {
+    expiresIn: '10d',
+  });
+
+  return {
+    accessToken,
+  };
 };
 
 export const AuthServices = {
