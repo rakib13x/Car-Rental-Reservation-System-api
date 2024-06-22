@@ -15,10 +15,14 @@ This API allows users to book cars and administrators to manage car information 
 
 ## Technologies Used
 
-- **Backend:** [Node.js](https://nodejs.org/), [Express](https://expressjs.com/)
+- **Backend:** [Node.js](https://nodejs.org/), [Express](https://expressjs.com/) with TypeScript
 - **Database:** [MongoDB](https://www.mongodb.com/)
 - **Authentication:** [JWT (JSON Web Tokens)](https://jwt.io/)
 - **Deployment:** [Vercel](https://vercel.com/)
+
+## Live Demo
+
+Check out the live demo of the API [here](https://car-rental-five-xi.vercel.app/).
 
 ## Installation
 
