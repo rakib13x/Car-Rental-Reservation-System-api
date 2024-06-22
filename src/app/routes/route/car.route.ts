@@ -17,7 +17,7 @@ router.post(
   validateRequest(createCarValidationSchema),
   CarControllers.createCars,
 );
-router.get('/', auth(USER_ROLE.admin), CarControllers.getAllCars);
+router.get('/', CarControllers.getAllCars);
 router.put(
   '/return',
   auth(USER_ROLE.admin),
