@@ -22,7 +22,7 @@ This API allows users to book cars and administrators to manage car information 
 
 ## Live Demo
 
-Check out the live demo of the API [here](https://car-rental-five-xi.vercel.app/).
+Check out the live demo of the API [https://car-rental-five-xi.vercel.app/](https://car-rental-five-xi.vercel.app/).
 
 ## Installation
 
