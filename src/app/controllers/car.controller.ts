@@ -115,22 +115,13 @@ const returnCar = catchAsync(async (req, res) => {
 
   try {
     const result = await CarServices.returnCarInDb(bookingId, endTime);
-
-    if (!result) {
-      return sendResponse(res, {
-        statusCode: httpStatus.NOT_FOUND,
-        success: false,
-        message: 'No Data Found',
-        data: null,
-      });
-    }
-
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: 'Car returned successfully!',
       data: result,
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     sendResponse(res, {
       statusCode: httpStatus.INTERNAL_SERVER_ERROR,

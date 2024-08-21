@@ -10,10 +10,11 @@ const createCarsIntoDB = async (car: TCar) => {
 
 const getAllCarsFromDb = async (regex?: RegExp) => {
   try {
+    // Define the filter object with an index signature
     const filter: { [key: string]: any } = { isDeleted: false };
 
     if (regex) {
-      filter['name'] = { $regex: regex };
+      filter['name'] = { $regex: regex }; // Add regex for name search if provided
     }
 
     const result = await CarModel.find(filter);
