@@ -10,14 +10,16 @@ const createCarsIntoDB = async (car: TCar) => {
 
 const getAllCarsFromDb = async (regex?: RegExp) => {
   try {
-    const result = regex
-      ? await CarModel.find({ name: { $regex: regex } })
-      : await CarModel.find();
+    const filter: { [key: string]: any } = { isDeleted: false };
 
+    if (regex) {
+      filter['name'] = { $regex: regex };
+    }
+
+    const result = await CarModel.find(filter);
     return result;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    throw new Error('Error fetching products: ' + error.message);
+    throw new Error('Error fetching cars: ' + error.message);
   }
 };
 

@@ -21,10 +21,10 @@ const getAllCars = catchAsync(async (req, res) => {
   const cars = await CarServices.getAllCarsFromDb(regex);
 
   if (cars.length === 0) {
-    sendResponse(res, {
+    return sendResponse(res, {
       statusCode: httpStatus.NOT_FOUND,
       success: false,
-      message: 'All Cars is retrieved successfully !',
+      message: 'No Data Found',
       data: [],
     });
   }
@@ -40,6 +40,16 @@ const getAllCars = catchAsync(async (req, res) => {
 const getSingleCar = catchAsync(async (req, res) => {
   const { carId } = req.params;
   const result = await CarServices.getSingleCarFromDb(carId);
+
+  if (!result) {
+    return sendResponse(res, {
+      statusCode: httpStatus.NOT_FOUND,
+      success: false,
+      message: 'No Data Found',
+      data: null,
+    });
+  }
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -54,13 +64,12 @@ const updateCar = catchAsync(async (req, res) => {
   const result = await CarServices.updateCarInDb(carId, updatedCar);
 
   if (!result) {
-    sendResponse(res, {
+    return sendResponse(res, {
       statusCode: httpStatus.NOT_FOUND,
       success: false,
-      message: 'Car not found!',
+      message: 'No Data Found',
       data: null,
     });
-    return;
   }
 
   sendResponse(res, {
@@ -76,13 +85,12 @@ const deleteCar = catchAsync(async (req, res) => {
   const result = await CarServices.deleteCarFromDb(carId);
 
   if (!result) {
-    sendResponse(res, {
+    return sendResponse(res, {
       statusCode: httpStatus.NOT_FOUND,
       success: false,
-      message: 'Car not found!',
+      message: 'No Data Found',
       data: null,
     });
-    return;
   }
 
   sendResponse(res, {
@@ -107,13 +115,22 @@ const returnCar = catchAsync(async (req, res) => {
 
   try {
     const result = await CarServices.returnCarInDb(bookingId, endTime);
+
+    if (!result) {
+      return sendResponse(res, {
+        statusCode: httpStatus.NOT_FOUND,
+        success: false,
+        message: 'No Data Found',
+        data: null,
+      });
+    }
+
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: 'Car returned successfully!',
       data: result,
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     sendResponse(res, {
       statusCode: httpStatus.INTERNAL_SERVER_ERROR,

@@ -14,18 +14,17 @@ const userSchema = new Schema<TUser>(
       required: true,
       unique: true,
     },
-    password: {
-      type: String,
-      required: true,
-      select: false,
-    },
     role: {
       type: String,
       enum: ['user', 'admin'],
       default: 'user',
     },
+    password: {
+      type: String,
+      required: true,
+    },
     phone: {
-      type: Number,
+      type: String,
       required: true,
     },
     address: {

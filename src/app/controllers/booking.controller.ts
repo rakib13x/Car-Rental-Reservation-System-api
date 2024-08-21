@@ -1,13 +1,15 @@
 /* eslint-disable prefer-const */
 import httpStatus from 'http-status';
+import { Types } from 'mongoose';
 import { BookingServices } from '../services/booking.service';
 import catchAsync from '../utils/catchAsync';
 import { isValidDate } from '../utils/isValidDate';
 import { isValidObjectId } from '../utils/isValidObjectId';
 import sendResponse from '../utils/sendResponse';
-
+import { createBookingValidationSchema } from '../validations/booking.validation';
 const createBooking = catchAsync(async (req, res) => {
   const { endTime, totalCost, ...bookingData } = req.body;
+  const userId = req.user._id;
 
   if (endTime || totalCost) {
     return sendResponse(res, {
@@ -18,7 +20,19 @@ const createBooking = catchAsync(async (req, res) => {
     });
   }
 
-  const result = await BookingServices.createBookingIntoDB(bookingData);
+  const validatedData = createBookingValidationSchema.parse({
+    body: bookingData,
+  });
+
+  const bookingDataWithObjectId = {
+    ...validatedData.body,
+    car: new Types.ObjectId(validatedData.body.carId),
+  };
+
+  const result = await BookingServices.createBookingIntoDB(
+    bookingDataWithObjectId,
+    userId,
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -40,6 +54,15 @@ const getMyBookings = catchAsync(async (req, res) => {
   }
 
   const bookings = await BookingServices.getMyBookingsFromDb(userId);
+
+  if (bookings.length === 0) {
+    return sendResponse(res, {
+      statusCode: httpStatus.NOT_FOUND,
+      success: false,
+      message: 'No Data Found',
+      data: [],
+    });
+  }
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -64,6 +87,15 @@ const getAllBookings = catchAsync(async (req, res) => {
   }
 
   const bookings = await BookingServices.getAllBookings(filter);
+
+  if (bookings.length === 0) {
+    return sendResponse(res, {
+      statusCode: httpStatus.NOT_FOUND,
+      success: false,
+      message: 'No Data Found',
+      data: [],
+    });
+  }
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

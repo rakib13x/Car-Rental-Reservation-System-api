@@ -6,9 +6,9 @@ export const createCarValidationSchema = z.object({
     description: z.string().min(5, { message: 'Car description is required!' }),
     color: z.string().min(3, { message: 'Car color is required!' }),
     isElectric: z.boolean(),
-    status: z.enum(['available', 'not available']).default('available'),
     features: z.array(z.string()),
     pricePerHour: z.number({ message: 'price is required!' }),
+    status: z.enum(['available', 'not available']).default('available'),
     isDeleted: z.boolean().default(false),
   }),
 });
@@ -21,12 +21,12 @@ export const updateCarValidationSchema = z.object({
       .optional(),
     color: z.string().min(3, { message: 'Car color is required!' }).optional(),
     isElectric: z.boolean().optional(),
+    features: z.array(z.string()).optional(),
+    pricePerHour: z.number({ message: 'price is required!' }).optional(),
     status: z
       .enum(['available', 'not available'])
       .default('available')
       .optional(),
-    features: z.array(z.string()).optional(),
-    pricePerHour: z.number({ message: 'price is required!' }).optional(),
     isDeleted: z.boolean().default(false).optional(),
   }),
 });

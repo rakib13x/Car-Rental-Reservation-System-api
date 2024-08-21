@@ -2,14 +2,15 @@ import { z } from 'zod';
 
 export const createBookingValidationSchema = z.object({
   body: z.object({
-    date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, {
-      message: 'Invalid date format! Must be in YYYY-MM-DD format.',
-    }),
-    user: z.string(),
-    car: z.string(),
-    startTime: z.string().regex(/^([01]\d|2[0-3]):?([0-5]\d)$/, {
-      message: 'Invalid start time format! Must be in HH:mm format.',
-    }),
+    carId: z.string().min(1, 'Car ID is required'),
+    date: z
+      .string()
+      .min(1, 'Date is required')
+      .transform((val) => new Date(val)),
+    startTime: z
+      .string()
+      .min(1, 'Start time is required')
+      .regex(/^([01]\d|2[0-3]):?([0-5]\d)$/, 'Invalid time format'),
   }),
 });
 

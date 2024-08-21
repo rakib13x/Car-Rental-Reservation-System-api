@@ -3,8 +3,8 @@ export interface TCar {
   description: string;
   color: string;
   isElectric: boolean;
-  status: 'available' | 'not available';
   features: string[];
   pricePerHour: number;
+  status: 'available' | 'not available';
   isDeleted: boolean;
 }

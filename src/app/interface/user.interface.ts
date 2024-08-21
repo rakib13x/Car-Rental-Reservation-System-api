@@ -5,10 +5,12 @@ import { USER_ROLE } from '../constants/user.constant';
 export interface TUser {
   name: string;
   email: string;
-  password: string;
   role: 'user' | 'admin';
-  phone: number;
+  password: string;
+  phone: string;
   address: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface UserModel extends Model<TUser> {
