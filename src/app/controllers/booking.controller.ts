@@ -7,6 +7,7 @@ import { isValidDate } from '../utils/isValidDate';
 import { isValidObjectId } from '../utils/isValidObjectId';
 import sendResponse from '../utils/sendResponse';
 import { createBookingValidationSchema } from '../validations/booking.validation';
+
 const createBooking = catchAsync(async (req, res) => {
   const { endTime, totalCost, ...bookingData } = req.body;
   const userId = req.user._id;
