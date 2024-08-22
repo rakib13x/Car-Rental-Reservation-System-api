@@ -77,6 +77,7 @@ const getAllBookings = catchAsync(async (req, res) => {
   const { carId, date } = req.query;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //filter
   let filter: any = {};
 
   if (carId && isValidObjectId(carId as string)) {
