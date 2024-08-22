@@ -10,7 +10,7 @@ const createCars = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Car is created succesfully',
+    message: 'Car created successfully',
     data: result,
   });
 });
@@ -32,7 +32,7 @@ const getAllCars = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'All Cars is retrieved successfully !',
+    message: 'Cars retrieved successfully',
     data: cars,
   });
 });
@@ -53,7 +53,7 @@ const getSingleCar = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Car is retrieved successfully!',
+    message: 'A Car retrieved successfully',
     data: result,
   });
 });
@@ -75,7 +75,7 @@ const updateCar = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Car updated successfully!',
+    message: 'Car updated successfully',
     data: result,
   });
 });
@@ -96,7 +96,7 @@ const deleteCar = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Car deleted successfully!',
+    message: 'Car Deleted successfully',
     data: result,
   });
 });
@@ -118,7 +118,7 @@ const returnCar = catchAsync(async (req, res) => {
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Car returned successfully!',
+      message: 'Car returned successfully',
       data: result,
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
