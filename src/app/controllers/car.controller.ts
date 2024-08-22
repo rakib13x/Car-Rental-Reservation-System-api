@@ -41,7 +41,7 @@ const getSingleCar = catchAsync(async (req, res) => {
   const { carId } = req.params;
   const result = await CarServices.getSingleCarFromDb(carId);
 
-  if (!result) {
+  if (!result || result.isDeleted) {
     return sendResponse(res, {
       statusCode: httpStatus.NOT_FOUND,
       success: false,
@@ -57,7 +57,6 @@ const getSingleCar = catchAsync(async (req, res) => {
     data: result,
   });
 });
-
 const updateCar = catchAsync(async (req, res) => {
   const { carId } = req.params;
   const updatedCar = req.body;
